@@ -74,6 +74,3 @@ print(arr)
 
 self_similar = CosSim(arr,arr2)
 print("nemteg1 and 2 similarity : {}".format(self_similar))
-
-
-
