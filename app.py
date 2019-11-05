@@ -6,6 +6,7 @@ import pickle
 import random
 import os
 import matplotlib.pyplot as plt
+import collections
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Jarak Euclidean
@@ -22,7 +23,7 @@ def DotVectors(a, b):
     n = len(a)
     c = 0
     for i in range(n):
-        c = c + (int(a[i]) * int(b[i]))
+        c = c + (float(a[i]) * float(b[i]))
     return c
 # Panjang Vektor
 def VectorLength(a):
@@ -42,20 +43,17 @@ def extract_feature(imagePath, vectorSize=64) :
     image = cv2.imread(imagePath)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    detector = cv2.AKAZE_create(descriptor_size=32)
+    detector = cv2.AKAZE_create()
 
-    keypoints = detector.detect(image)
+    keypoints = detector.detect(gray)
+    keypoints = sorted(keypoints, key=lambda x: x.response)[:vectorSize]
 
-    keypoints = sorted(keypoints, key=lambda x: -x.response)[:vectorSize]
-
-    keypoints, dsc = detector.compute(image, keypoints)
-    
-
+    (keypoints, dsc) = detector.compute(image, keypoints)
     print("keypoints : {}, descriptors : {}".format(len(keypoints), dsc.shape))
 
-    """ cv2.drawKeypoints(image, keypoints, image, (0, 255, 0))
-    cv2.imshow("Output", image)
-    cv2.waitKey(0) """
+    # cv2.drawKeypoints(image, keypoints, image, (0, 255, 0))
+    # cv2.imshow("Output", gray)
+    # cv2.waitKey(0)
 
     dsc = dsc.flatten()
 
@@ -64,13 +62,54 @@ def extract_feature(imagePath, vectorSize=64) :
 
     return dsc
 
-mat1 = extract_feature("nemteg.jpg")
-mat2 = extract_feature("nemteg.jpg")
-arr = mat1
-arr2 = mat2
+def batch_extract(image_path, db_path="extracted/features.pck"):
+    files = [os.path.join(image_path,p) for p in sorted(os.listdir(image_path))]
 
-print("arr size : {}".format(arr.shape))
-print(arr)
+    result = {}
 
-self_similar = CosSim(arr,arr2)
-print("nemteg1 and 2 similarity : {}".format(self_similar))
+    for f in files:
+        print("Extracting features from %s", f)
+        name = f.split('/')[-1].lower()
+        result[name] = extract_feature(f)
+
+    with open(db_path, 'wb') as fp :
+        pickle.dump(result, fp)
+
+def loadDb(db_path) :
+    infile = open(db_path, 'rb')
+    new_db = pickle.load(infile)
+    infile.close()
+    return new_db
+
+def match(img_path, db_obj) :
+    features = extract_feature(img_path)
+    cont = {}
+    for key in db_obj :
+        cosim = CosSim(features, db_obj[key])
+        cont[key] = cosim
+    cont = cont.items()
+    cont = sorted(cont, key=lambda kv: (kv[1], kv[0]))
+    print(type(cont))
+    cont.reverse()
+    print(cont[:5])
+
+def run():
+    image_path = "db/"
+    db = loadDb("extracted/features.pck")
+    files = [os.path.join(image_path,p) for p in sorted(os.listdir(image_path))]
+
+    # print(db)
+
+    sample = random.sample(files, 1)
+    # random sampling 1
+    container = {}
+
+    for s in sample :
+        print("Query Image ==================")
+        img = cv2.imread(s)
+        cv2.imshow("Output", img)
+        cv2.waitKey(0)
+        match(s, db)
+
+
+run()
