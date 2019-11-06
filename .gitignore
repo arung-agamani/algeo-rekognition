@@ -2,3 +2,6 @@ db
 extracted
 /db
 /extracted
+PINS
+/PINS
+__pycache__
