@@ -49,18 +49,23 @@ def extract_feature(imagePath, vectorSize=64) :
     keypoints = sorted(keypoints, key=lambda x: x.response)[:vectorSize]
 
     (keypoints, dsc) = detector.compute(image, keypoints)
-    print("keypoints : {}, descriptors : {}".format(len(keypoints), dsc.shape))
+    if (hasattr(dsc, 'shape')) :
+        print("keypoints : {}, descriptors : {}".format(len(keypoints), dsc.shape))
+
+        dsc = dsc.flatten()
+
+        if dsc.size < vectorSize*64 :
+            dsc = np.concatenate([dsc, np.zeros(vectorSize*64 - dsc.size)])
+
+        return dsc
+    else :
+        dsc = 0
 
     # cv2.drawKeypoints(image, keypoints, image, (0, 255, 0))
     # cv2.imshow("Output", gray)
     # cv2.waitKey(0)
 
-    dsc = dsc.flatten()
-
-    if dsc.size < vectorSize*64 :
-        dsc = np.concatenate([dsc, np.zeros(vectorSize*64 - dsc.size)])
-
-    return dsc
+    
 
 def batch_extract(image_path):
     files = [os.path.join(image_path,p) for p in sorted(os.listdir(image_path))]
@@ -69,8 +74,10 @@ def batch_extract(image_path):
 
     for f in files:
         print("Extracting features from %s", f)
+        temp = extract_feature(f)
         name = f.split('\\')[-1]
-        result[name] = extract_feature(f)
+        if (type(temp) != int) :
+            result[name] = temp
 
     print(result)
     return result
