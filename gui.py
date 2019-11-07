@@ -85,7 +85,7 @@ class AppWindow(QDialog) :
         self.ui.testImage.setPixmap(QtGui.QPixmap.fromImage(image_profile))
 
     def loadImageClick(self):
-        image_path = str(QFileDialog.getOpenFileName(self, "Select Image", "./", "Image file (*.jpg)", "")[0])
+        image_path = str(QFileDialog.getOpenFileName(self, "Select Image", "./", "Image file (*.jpg);;Image file (*.png)")[0])
         if os.path.isfile(image_path):
             self.dirLoaded = False
             image_profile = QtGui.QImage(image_path)
