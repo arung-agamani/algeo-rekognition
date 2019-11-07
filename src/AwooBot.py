@@ -6,6 +6,7 @@ import os.path
 
 class AppWindow(QDialog) :
     def __init__ (self) :
+    """Menghubungkan tiap tombol dalam GUI dengan metode yang akan dilakukan sebagai respon terhadap aksi pengguna."""
         super().__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)        
@@ -19,12 +20,14 @@ class AppWindow(QDialog) :
         self.ui.loadImageButton.clicked.connect(self.loadImageClick)
         self.ui.matchButton.clicked.connect(self.matchClick)
 
+    """Inisialisasi keadaan awal program"""
         self.curDbDir = 'No Database Loaded'
         self.matchingMethod = 1
         self.dirLoaded = False
         self.db = None
         self.show()
 
+    """Mengatur metode pencocokan (dengan cosine similarity atau euclidean distance) sesuai dengan pilihan pengguna."""
     def matchMethod(self, radio) :
         if radio.text() == 'Cosine Similarity' :
             if radio.isChecked() == True :
@@ -36,18 +39,21 @@ class AppWindow(QDialog) :
                 print("Method switched : Euclidean Distance")
                 self.matchingMethod = 2
 
+    """Pemilihan direktori oleh pengguna."""
     def pickDirectory(self) :
         directory = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if (directory != '') :
             self.ui.currentDirLabel.setText(directory)
             self.dirLoaded = True
 
+    """Pemilihan database oleh pengguna."""
     def pickDatabase(self) :
         database = str(QFileDialog.getOpenFileName(self, "Select Database", "./", "Pickle file (*.pck)")[0])
         if (database != '') :
             self.ui.currentDbLabel.setText(database)
             self.loadDatabase()
     
+    """Penyimpanan database yang sedang digunakan pengguna."""
     def saveDatabase(self) :
         db_dest = str(QFileDialog.getSaveFileName(self, "Save Database", "./extracted", "PIckle file (*.pck)")[0])
         # print(db_dest)
@@ -57,12 +63,14 @@ class AppWindow(QDialog) :
             print("Database is not empty. Proceeding to save database.")
             appLogic.write_db(self.db, db_dest)
     
+    """Loading database yang dipilih pengguna."""
     def loadDatabase(self) :
         # loads database to a file on this context
         db_path = self.ui.currentDbLabel.text()
         self.db = appLogic.loadDb(db_path)
         print("Database loaded successfully")
 
+    """Pembuatan database dari suatu database atas perintah Batch Process dari pengguna."""
     def processDirToDb(self) :
         if self.dirLoaded :
             currentDir = self.ui.currentDirLabel.text()
@@ -78,12 +86,14 @@ class AppWindow(QDialog) :
         else :
             self.showAlertBox("No directory selected.")
     
+    """Mengubah tampilan gambar yang sedang diuji."""
     def changeTestImage(self, filename) :
         image_path = filename
         image_profile = QtGui.QImage(image_path)
         image_profile = image_profile.scaled(350, 350, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
         self.ui.testImage.setPixmap(QtGui.QPixmap.fromImage(image_profile))
 
+    """Memilih gambar dengan tombol Load Image."""
     def loadImageClick(self):
         image_path = str(QFileDialog.getOpenFileName(self, "Select Image", "./", "Image file (*.jpg);;Image file (*.png)")[0])
         if os.path.isfile(image_path):
@@ -96,6 +106,7 @@ class AppWindow(QDialog) :
         else:
             self.showAlertBox("No picture selected.")
 
+    """Memilih gambar dan melakukan match sesuai dengan perintah Randomize, kemudian menampilkan hasilnya."""
     def randomClick(self):
         if self.dirLoaded :
             image_path = appLogic.random_sampling(self.ui.currentDirLabel.text())
@@ -158,6 +169,7 @@ class AppWindow(QDialog) :
         else :
             self.showAlertBox("No directory loaded")
 
+    """Melakukan matching dengan tombol Match."""
     def matchClick(self):
         image_path = self.ui.currentImageLabel.text()
         if os.path.isfile(image_path):
@@ -219,6 +231,7 @@ class AppWindow(QDialog) :
         else :
             self.showAlertBox("No image loaded")
 
+    """Menunjukkan pesan peringatan."""
     def showAlertBox(self, msg) :
         alert = QMessageBox()
         alert.setText(msg)
