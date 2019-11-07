@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication, QLabel, QDialog, QFileDialog, QMessage
 from PyQt5 import QtGui, QtCore
 from dialog import Ui_Dialog
 import app as appLogic
+import os.path
 
 class AppWindow(QDialog) :
     def __init__ (self) :
@@ -100,29 +101,44 @@ class AppWindow(QDialog) :
                 stringFormat = "{}"
     
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[1][0]))
-            image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
-            self.ui.resImage.setPixmap(QtGui.QPixmap.fromImage(image_profile))
-            self.ui.matchRate.setText(stringFormat.format(int(round(self.matches_arr[1][1]*100))))
+            if (os.path.exists(imgProf)) :
+                image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
+                self.ui.resImage.setPixmap(QtGui.QPixmap.fromImage(image_profile))
+                self.ui.matchRate.setText(stringFormat.format(int(round(self.matches_arr[1][1]*100))))
+            else :
+                self.showAlertBox("Missing file :", imgProf)
 
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[2][0]))
-            image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
-            self.ui.resImage_2.setPixmap(QtGui.QPixmap.fromImage(image_profile))
-            self.ui.matchRate_2.setText(stringFormat.format(int(round(self.matches_arr[2][1]*100))))
+            if (os.path.exists(imgProf)) :
+                image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
+                self.ui.resImage_2.setPixmap(QtGui.QPixmap.fromImage(image_profile))
+                self.ui.matchRate_2.setText(stringFormat.format(int(round(self.matches_arr[2][1]*100))))
+            else :
+                self.showAlertBox("Missing file :", imgProf)
 
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[3][0]))
-            image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
-            self.ui.resImage_3.setPixmap(QtGui.QPixmap.fromImage(image_profile))
-            self.ui.matchRate_3.setText(stringFormat.format(int(round(self.matches_arr[3][1]*100))))
+            if (os.path.exists(imgProf)) :
+                image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
+                self.ui.resImage_3.setPixmap(QtGui.QPixmap.fromImage(image_profile))
+                self.ui.matchRate_3.setText(stringFormat.format(int(round(self.matches_arr[3][1]*100))))
+            else :
+                self.showAlertBox("Missing file :", imgProf)
 
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[4][0]))
-            image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
-            self.ui.resImage_4.setPixmap(QtGui.QPixmap.fromImage(image_profile))
-            self.ui.matchRate_4.setText(stringFormat.format(int(round(self.matches_arr[4][1]*100))))
+            if (os.path.exists(imgProf)) :
+                image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
+                self.ui.resImage_4.setPixmap(QtGui.QPixmap.fromImage(image_profile))
+                self.ui.matchRate_4.setText(stringFormat.format(int(round(self.matches_arr[4][1]*100))))
+            else :
+                self.showAlertBox("Missing file :", imgProf)
 
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[5][0]))
-            image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
-            self.ui.resImage_5.setPixmap(QtGui.QPixmap.fromImage(image_profile))
-            self.ui.matchRate_5.setText(stringFormat.format(int(round(self.matches_arr[5][1]*100))))
+            if (os.path.exists(imgProf)) :
+                image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
+                self.ui.resImage_5.setPixmap(QtGui.QPixmap.fromImage(image_profile))
+                self.ui.matchRate_5.setText(stringFormat.format(int(round(self.matches_arr[5][1]*100))))
+            else :
+                self.showAlertBox("Missing file :", imgProf)
         else :
             self.showAlertBox("No directory loaded")
 
