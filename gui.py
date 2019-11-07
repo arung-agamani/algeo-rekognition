@@ -84,14 +84,14 @@ class AppWindow(QDialog) :
         self.ui.testImage.setPixmap(QtGui.QPixmap.fromImage(image_profile))
 
     def loadImageClick(self):
-        image_file = str(QFileDialog.getOpenFileName(self, "Select Image", "./", "Image file (*.jpg)", "")[0])
-        if os.path.isfile(image_file):
+        image_path = str(QFileDialog.getOpenFileName(self, "Select Image", "./", "Image file (*.jpg)", "")[0])
+        if os.path.isfile(image_path):
             self.dirLoaded = False
-            image_profile = QtGui.QImage(image_file)
+            image_profile = QtGui.QImage(image_path)
             stringFormat = ""
             image_profile = image_profile.scaled(350, 350, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
             self.ui.testImage.setPixmap(QtGui.QPixmap.fromImage(image_profile))
-            self.ui.currentDirLabel.setText(image_file)
+            self.ui.currentDirLabel.setText(image_path)
 
         else:
             self.showAlertBox("No picture selected.")
