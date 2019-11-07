@@ -91,7 +91,7 @@ class AppWindow(QDialog) :
             image_profile = QtGui.QImage(image_path)
             image_profile = image_profile.scaled(350, 350, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
             self.ui.testImage.setPixmap(QtGui.QPixmap.fromImage(image_profile))
-            self.ui.currentDirLabel.setText(image_path)
+            self.ui.currentImageLabel.setText(image_path)
 
         else:
             self.showAlertBox("No picture selected.")
@@ -99,6 +99,7 @@ class AppWindow(QDialog) :
     def randomClick(self):
         if self.dirLoaded :
             image_path = appLogic.random_sampling(self.ui.currentDirLabel.text())
+            self.ui.currentImageLabel.setText(image_path)
             currentDir = self.curDbDir
             image_profile = QtGui.QImage(image_path)
             stringFormat = ""
@@ -158,7 +159,7 @@ class AppWindow(QDialog) :
             self.showAlertBox("No directory loaded")
 
     def matchClick(self):
-        image_path = self.ui.currentDirLabel.text()
+        image_path = self.ui.currentImageLabel.text()
         if os.path.isfile(image_path):
             currentDir = self.curDbDir
             image_profile = QtGui.QImage(image_path)
@@ -174,14 +175,14 @@ class AppWindow(QDialog) :
                 # Euclidean Distance == 2
                 self.matches_arr = appLogic.match_euclid(image_path, self.db)
                 stringFormat = "{}"
-    
+
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[0][0]))
             if os.path.isfile(currentDir + '/' + str(self.matches_arr[0][0])):
                 image_profile = imgProf.scaled(150, 150, aspectRatioMode=QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
                 self.ui.resImage.setPixmap(QtGui.QPixmap.fromImage(image_profile))
                 self.ui.matchRate.setText(stringFormat.format(int(round(self.matches_arr[0][1]*100))))
             else:
-                self.showAlertBox("Picture " + str(self.matches_arr[0][0]) + " is not found.")
+                self.showAlertBox("Image " + str(self.matches_arr[0][0]) + " is not found.")
 
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[1][0]))
             if os.path.isfile(currentDir + '/' + str(self.matches_arr[1][0])):
@@ -189,7 +190,7 @@ class AppWindow(QDialog) :
                 self.ui.resImage_2.setPixmap(QtGui.QPixmap.fromImage(image_profile))
                 self.ui.matchRate_2.setText(stringFormat.format(int(round(self.matches_arr[1][1]*100))))
             else:
-                self.showAlertBox("Picture " + str(self.matches_arr[1][0]) + " is not found.")
+                self.showAlertBox("Image " + str(self.matches_arr[1][0]) + " is not found.")
 
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[2][0]))
             if os.path.isfile(currentDir + '/' + str(self.matches_arr[2][0])):
@@ -197,7 +198,7 @@ class AppWindow(QDialog) :
                 self.ui.resImage_3.setPixmap(QtGui.QPixmap.fromImage(image_profile))
                 self.ui.matchRate_3.setText(stringFormat.format(int(round(self.matches_arr[2][1]*100))))
             else:
-                self.showAlertBox("Picture " + str(self.matches_arr[2][0]) + " is not found.")
+                self.showAlertBox("Image " + str(self.matches_arr[2][0]) + " is not found.")
 
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[3][0]))
             if os.path.isfile(currentDir + '/' + str(self.matches_arr[3][0])):
@@ -205,7 +206,7 @@ class AppWindow(QDialog) :
                 self.ui.resImage_4.setPixmap(QtGui.QPixmap.fromImage(image_profile))
                 self.ui.matchRate_4.setText(stringFormat.format(int(round(self.matches_arr[3][1]*100))))
             else:
-                self.showAlertBox("Picture " + str(self.matches_arr[3][0]) + " is not found.")
+                self.showAlertBox("Image " + str(self.matches_arr[3][0]) + " is not found.")
 
             imgProf = QtGui.QImage(currentDir + '/' + str(self.matches_arr[4][0]))
             if os.path.isfile(currentDir + '/' + str(self.matches_arr[4][0])):
@@ -213,7 +214,7 @@ class AppWindow(QDialog) :
                 self.ui.resImage_5.setPixmap(QtGui.QPixmap.fromImage(image_profile))
                 self.ui.matchRate_5.setText(stringFormat.format(int(round(self.matches_arr[4][1]*100))))
             else:
-                self.showAlertBox("Picture " + str(self.matches_arr[4][0]) + " is not found.")
+                self.showAlertBox("Image " + str(self.matches_arr[4][0]) + " is not found.")
             
         else :
             self.showAlertBox("No image loaded")
