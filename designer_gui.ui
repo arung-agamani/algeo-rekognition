@@ -336,7 +336,7 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>10</y>
+     <y>194</y>
      <width>181</width>
      <height>16</height>
     </rect>
@@ -353,8 +353,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>190</y>
+     <x>349</x>
+     <y>2</y>
      <width>181</width>
      <height>31</height>
     </rect>
@@ -411,7 +411,7 @@
    <property name="geometry">
     <rect>
      <x>340</x>
-     <y>180</y>
+     <y>176</y>
      <width>331</width>
      <height>16</height>
     </rect>
@@ -424,7 +424,7 @@
    <property name="geometry">
     <rect>
      <x>340</x>
-     <y>220</y>
+     <y>216</y>
      <width>331</width>
      <height>16</height>
     </rect>
@@ -476,7 +476,7 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>240</y>
+     <y>46</y>
      <width>311</width>
      <height>121</height>
     </rect>
@@ -500,7 +500,7 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>50</y>
+     <y>230</y>
      <width>311</width>
      <height>121</height>
     </rect>
@@ -560,6 +560,19 @@
    </property>
    <property name="text">
     <string>Euclidean Distance</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="matchButton">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>230</y>
+     <width>101</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Match</string>
    </property>
   </widget>
  </widget>
